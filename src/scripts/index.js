@@ -3,7 +3,7 @@ import '../styles/styles.css';
 
 // Import routes and router
 import App from './pages/app.js';
-import { Router } from './routes/router.js';
+import router from './routes/index.js';
 import pushNotification from './utils/push-notification.js';
 import { NotificationView } from './views/notification-view.js';
 
@@ -13,8 +13,6 @@ if (!window.globalNotificationView) {
   document.body.insertAdjacentHTML('beforeend', window.globalNotificationView.render());
   window.globalNotificationView.afterRender();
 }
-
-const router = new Router();
 
 window.addEventListener('hashchange', () => {
   router.renderPage();

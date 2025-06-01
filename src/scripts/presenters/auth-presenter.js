@@ -1,5 +1,4 @@
 import AuthModel from '../models/auth-model.js';
-import { Router } from '../routes/router.js';
 import { AuthView } from '../views/auth-view.js';
 import { NotificationView } from '../views/notification-view.js';
 

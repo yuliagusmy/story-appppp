@@ -5,7 +5,7 @@ APP_URL=https://story-app-dicoding.web.app
 - Tidak memerlukan API key
 - Peta dapat digunakan secara gratis
 
-URL: https://username.github.io/namarepo/
+URL: https://github.com/yuliagusmy/story-appppp
 
 Ganti 'username' dan 'namarepo' dengan username dan nama repository GitHub Anda setelah deploy.
 
