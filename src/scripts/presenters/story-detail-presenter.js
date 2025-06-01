@@ -1,5 +1,5 @@
 import { StoryModel } from '../models/story-model.js';
-import { isStorySaved, saveStory, unsaveStory } from '../utils/saved-story.js';
+import { isStorySaved, saveStory } from '../utils/saved-story.js';
 import { StoryDetailView } from '../views/story-detail-view.js';
 
 export class StoryDetailPresenter {
@@ -34,13 +34,8 @@ export class StoryDetailPresenter {
     }
   }
 
-  async handleSaveStory() {
-    if (!this.currentStory) return;
-    if (await isStorySaved(this.currentStory.id)) {
-      await unsaveStory(this.currentStory.id);
-    } else {
-      await saveStory(this.currentStory);
-    }
+  async handleSaveStory(story) {
+    await saveStory(story);
     await this.init(); // refresh UI
   }
 

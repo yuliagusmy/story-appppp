@@ -8,7 +8,8 @@ const urlsToCache = [
   '/scripts/utils/push-handler.js',
   '/scripts/components/push-notification-toggle.js',
   '/styles/styles.css',
-  '/icons/icon-192x192.svg'
+  '/icons/icon-192x192.svg',
+  '/offline.html'
 ];
 
 // Install service worker and cache assets
@@ -78,17 +79,75 @@ self.addEventListener('notificationclick', function(event) {
   }
 });
 
-// Handle fetch requests
+// Handle fetch requests with different strategies
 self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  const url = new URL(request.url);
+
+  // Skip cross-origin requests
+  if (url.origin !== location.origin) {
+    return;
+  }
+
+  // Cache First for static assets
+  if (request.url.match(/\.(js|css|png|jpg|jpeg|gif|svg)$/)) {
+    event.respondWith(
+      caches.match(request).then((response) => {
+        return response || fetch(request).then((response) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, response.clone());
+            return response;
+          });
+        });
+      })
+    );
+    return;
+  }
+
+  // Network First for API requests
+  if (request.url.includes('/stories')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, response.clone());
+            return response;
+          });
+        })
+        .catch(() => {
+          return caches.match(request);
+        })
+    );
+    return;
+  }
+
+  // Default: Network First with offline fallback
   event.respondWith(
-    caches.match(event.request)
+    fetch(request)
       .then((response) => {
-        // Cache hit - return response
-        if (response) {
+        return caches.open(CACHE_NAME).then((cache) => {
+          cache.put(request, response.clone());
           return response;
-        }
-        return fetch(event.request);
-      }
-    )
+        });
+      })
+      .catch(() => {
+        return caches.match(request)
+          .then((response) => {
+            if (response) {
+              return response;
+            }
+            // Return offline page for navigation requests
+            if (request.mode === 'navigate') {
+              return caches.match('/offline.html');
+            }
+            return new Response('Offline', {
+              status: 503,
+              statusText: 'Service Unavailable',
+              headers: new Headers({
+                'Content-Type': 'text/plain'
+              })
+            });
+          });
+      })
   );
 });

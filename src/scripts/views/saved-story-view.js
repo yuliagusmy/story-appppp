@@ -1,10 +1,15 @@
 export class SavedStoryView {
   constructor() {
     this.container = null;
+    this.onUnsaveStory = null;
   }
 
   setContainer(container) {
     this.container = container;
+  }
+
+  setUnsaveStoryCallback(callback) {
+    this.onUnsaveStory = callback;
   }
 
   render() {
@@ -26,7 +31,7 @@ export class SavedStoryView {
     }
 
     container.innerHTML = stories.map(story => `
-      <article class="story-card">
+      <article class="story-card" style="position:relative;">
         <div class="story-image">
           <img src="${story.photoUrl || story.photo}" alt="Foto cerita ${story.name}" loading="lazy">
         </div>
@@ -44,8 +49,18 @@ export class SavedStoryView {
           </div>
           <a class="story-more-btn" href="#/detail/${story.id}">Selengkapnya</a>
         </div>
+        <button class="story-more-btn unsave-btn" data-id="${story.id}" title="Hapus dari Story Disimpan" style="position:absolute;bottom:1rem;right:1rem;z-index:2;min-width:unset;padding:0.5rem 1rem;background:#e74c3c;color:#fff;border:none;box-shadow:0 2px 8px rgba(44,62,80,0.10);display:flex;align-items:center;gap:0.5rem;"><i class="fas fa-trash"></i> Hapus</button>
       </article>
     `).join('');
+
+    // Tambahkan event listener untuk tombol hapus
+    container.querySelectorAll('.unsave-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = btn.getAttribute('data-id');
+        if (this.onUnsaveStory) this.onUnsaveStory(id);
+      });
+    });
   }
 
   renderError(message) {

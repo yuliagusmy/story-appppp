@@ -8,3 +8,34 @@ APP_URL=https://story-app-dicoding.web.app
 URL: https://username.github.io/namarepo/
 
 Ganti 'username' dan 'namarepo' dengan username dan nama repository GitHub Anda setelah deploy.
+
+Nama: [Nama Lengkap Anda]
+ID Dicoding: [ID Dicoding Anda]
+Link Deployment: [Link GitHub Pages Anda]
+
+Fitur yang diimplementasikan:
+1. PWA (Progressive Web App)
+   - Installable
+   - Offline support dengan Service Worker
+   - Manifest yang lengkap
+   - Application Shell Architecture
+
+2. Push Notification
+   - Menggunakan VAPID key dari Dicoding
+   - Service worker untuk menangani notifikasi
+   - Toggle untuk mengaktifkan/menonaktifkan notifikasi
+
+3. IndexedDB
+   - Menyimpan cerita favorit
+   - Menampilkan cerita yang disimpan
+   - Menghapus cerita yang disimpan
+
+Fitur Opsional:
+1. Manifest Shortcuts
+   - Shortcut ke halaman "Tambah Cerita"
+
+2. Screenshots di Manifest
+   - Screenshot desktop dan mobile
+
+3. Maskable Icons
+   - Icon yang mendukung adaptive icons di Android

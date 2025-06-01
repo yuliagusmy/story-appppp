@@ -7,7 +7,16 @@ const pushNotification = {
     const registration = await navigator.serviceWorker.register('/service-worker.js');
     await navigator.serviceWorker.ready;
 
-    const subscription = await registration.pushManager.subscribe({
+    let subscription = await registration.pushManager.getSubscription();
+    if (subscription) {
+      try {
+        await subscription.unsubscribe();
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: this.urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY)
     });

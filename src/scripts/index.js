@@ -5,6 +5,14 @@ import '../styles/styles.css';
 import App from './pages/app.js';
 import { Router } from './routes/router.js';
 import pushNotification from './utils/push-notification.js';
+import { NotificationView } from './views/notification-view.js';
+
+// Inisialisasi NotificationView global
+if (!window.globalNotificationView) {
+  window.globalNotificationView = new NotificationView();
+  document.body.insertAdjacentHTML('beforeend', window.globalNotificationView.render());
+  window.globalNotificationView.afterRender();
+}
 
 const router = new Router();
 

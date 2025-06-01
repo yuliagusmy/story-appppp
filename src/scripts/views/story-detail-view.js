@@ -1,4 +1,3 @@
-
 export class StoryDetailView {
   constructor() {
     this.container = null;
@@ -80,10 +79,12 @@ export class StoryDetailView {
         </div>
 
         <div class="story-detail-actions">
-          <button id="save-story" class="story-more-btn ${story.isSaved ? 'saved' : ''}">
-            <i class="fas ${story.isSaved ? 'fa-bookmark' : 'fa-bookmark-o'}"></i>
-            ${story.isSaved ? 'Tersimpan' : 'Simpan Cerita'}
+          ${!story.isSaved ? `
+          <button id="save-story" class="story-more-btn">
+            <i class="fas fa-bookmark-o"></i>
+            Simpan Cerita
           </button>
+          ` : ''}
           <a href="#/" class="story-more-btn">
             <i class="fas fa-arrow-left"></i>
             Kembali
@@ -92,22 +93,22 @@ export class StoryDetailView {
       </div>
     `;
 
-    // Save/Unsave button logic
-    const saveBtn = document.getElementById('save-story');
-    if (saveBtn) {
-      saveBtn.addEventListener('click', () => {
-        if (this.onSaveStory) {
-          this.onSaveStory(story.id);
-        }
-      });
-    }
-
     if (hasLocation) {
       setTimeout(() => {
         if (window.L && document.getElementById('detail-map-preview')) {
           this.initializeMap(story);
         }
       }, 100);
+    }
+
+    // Save button logic (hanya jika tombol ada)
+    const saveBtn = document.getElementById('save-story');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        if (this.onSaveStory) {
+          this.onSaveStory(story);
+        }
+      });
     }
   }
 

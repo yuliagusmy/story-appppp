@@ -15,34 +15,29 @@ class PushNotificationToggle extends HTMLElement {
     const toggle = this.shadowRoot.querySelector('#push-toggle');
     if (toggle) {
       toggle.addEventListener('change', async (event) => {
-        const token = localStorage.getItem('token'); // Ambil token dari localStorage
+        const token = localStorage.getItem('token');
         try {
           if (event.target.checked) {
             await pushNotification.register(token);
-            this.showMessage('Push notifications enabled!');
+            if (window.globalNotificationView) {
+              window.globalNotificationView.showSuccess('Push notifications enabled!');
+            }
           } else {
             await pushNotification.unregister(token);
-            this.showMessage('Push notifications disabled');
+            if (window.globalNotificationView) {
+              window.globalNotificationView.showSuccess('Push notifications disabled');
+            }
           }
         } catch (error) {
           console.error('Error toggling push notifications:', error);
-          this.showMessage('Failed to toggle push notifications: ' + error.message);
+          if (window.globalNotificationView) {
+            window.globalNotificationView.showError('Failed to toggle push notifications: ' + error.message);
+          }
           if (toggle) {
             toggle.checked = !toggle.checked;
           }
         }
       });
-    }
-  }
-
-  showMessage(message) {
-    const messageElement = this.shadowRoot.querySelector('#message');
-    if (messageElement) {
-      messageElement.textContent = message;
-      messageElement.style.display = 'block';
-      setTimeout(() => {
-        messageElement.style.display = 'none';
-      }, 3000);
     }
   }
 
@@ -97,14 +92,6 @@ class PushNotificationToggle extends HTMLElement {
         input:checked + .slider:before {
           transform: translateX(26px);
         }
-        #message {
-          display: none;
-          margin-top: 0.5rem;
-          padding: 0.5rem;
-          border-radius: 4px;
-          background-color: #e3f2fd;
-          color: #1976d2;
-        }
       </style>
       <div class="toggle-container">
         <label class="toggle">
@@ -113,7 +100,6 @@ class PushNotificationToggle extends HTMLElement {
         </label>
         <span>Enable Push Notifications</span>
       </div>
-      <div id="message"></div>
     `;
   }
 }

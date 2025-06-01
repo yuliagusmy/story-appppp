@@ -654,3 +654,30 @@ button[aria-busy="true"]::after {
   background: linear-gradient(90deg, #2d6da3 0%, #4a90e2 100%) !important;
   box-shadow: 0 8px 32px rgba(44, 62, 80, 0.18), 0 0 0 2px #4a90e2;
 }
+
+.navigation-drawer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  padding: 0 1.5rem;
+  background: #fff;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+push-notification-toggle {
+  margin-left: 1.5rem;
+  margin-bottom: 0;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
