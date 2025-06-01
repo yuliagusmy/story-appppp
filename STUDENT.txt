@@ -1,0 +1,10 @@
+APP_URL=https://story-app-dicoding.web.app
+
+# Informasi Tambahan
+- Aplikasi menggunakan OpenStreetMap untuk layanan peta
+- Tidak memerlukan API key
+- Peta dapat digunakan secara gratis
+
+URL: https://username.github.io/namarepo/
+
+Ganti 'username' dan 'namarepo' dengan username dan nama repository GitHub Anda setelah deploy.
