@@ -10,10 +10,15 @@ export default defineConfig({
     open: true
   },
   build: {
-    outDir: 'dist',
+    outDir: resolve(__dirname, 'dist'),
     emptyOutDir: true,
     assetsDir: 'assets',
-    sourcemap: true
+    sourcemap: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'src', 'index.html')
+      }
+    }
   },
   resolve: {
     alias: {
