@@ -1,4 +1,4 @@
-import routes from '../routes/routes.js';
+import router from '../routes/index.js';
 import { getActiveRoute } from '../routes/url-parser.js';
 
 class App {
@@ -52,7 +52,7 @@ class App {
 
   async renderPage() {
     const url = getActiveRoute();
-    const page = routes[url];
+    const page = router.routes[url];
 
     this.#content.innerHTML = await page.render();
     await page.afterRender();
