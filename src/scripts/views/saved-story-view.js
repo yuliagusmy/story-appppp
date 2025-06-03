@@ -47,7 +47,7 @@ export class SavedStoryView {
               ${story.lat && story.lon ? `<span class="story-location"><i class="fas fa-map-marker-alt"></i> <a href="https://www.google.com/maps?q=${story.lat},${story.lon}" target="_blank">Lihat Lokasi</a></span>` : ''}
             </div>
           </div>
-          <a class="story-more-btn" href="#/detail/${story.id}">Selengkapnya</a>
+          <a class="story-more-btn" href="#/detail/${story.id.replace(/^story-/, '')}">Selengkapnya</a>
         </div>
         <button class="story-more-btn unsave-btn" data-id="${story.id}" title="Hapus dari Story Disimpan" style="position:absolute;bottom:1rem;right:1rem;z-index:2;min-width:unset;padding:0.5rem 1rem;background:#e74c3c;color:#fff;border:none;box-shadow:0 2px 8px rgba(44,62,80,0.10);display:flex;align-items:center;gap:0.5rem;"><i class="fas fa-trash"></i> Hapus</button>
       </article>

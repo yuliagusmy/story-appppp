@@ -43,7 +43,7 @@ export class StoryListView {
               src="${story.photoUrl || story.photo}"
               alt="Foto cerita ${story.name || 'Story'}"
               loading="lazy"
-              onerror="this.src='https://via.placeholder.com/400x300?text=Gambar+tidak+tersedia'"
+              onerror="this.src='/placeholder.png'"
             >
           </div>
           <div class="story-content">
@@ -79,7 +79,7 @@ export class StoryListView {
                   </div>
                 ` : ''}
               </div>
-              <a class="story-more-btn" href="#/detail/${story.id}">Selengkapnya</a>
+              <a class="story-more-btn" href="#/detail/${story.id.replace(/^story-/, '')}">Selengkapnya</a>
             </div>
           </div>
         </article>

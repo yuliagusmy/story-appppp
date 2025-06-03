@@ -7,7 +7,11 @@ export default defineConfig({
   publicDir: resolve(__dirname, 'src', 'public'),
   server: {
     port: 3000,
-    open: true
+    open: true,
+    fs: { allow: ['..'] },
+    // Fallback untuk SPA
+    middlewareMode: false,
+    historyApiFallback: true
   },
   build: {
     outDir: resolve(__dirname, 'dist'),

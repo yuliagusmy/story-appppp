@@ -9,8 +9,8 @@ URL: https://github.com/yuliagusmy/story-appppp
 
 Ganti 'username' dan 'namarepo' dengan username dan nama repository GitHub Anda setelah deploy.
 
-Nama: [Nama Lengkap Anda]
-ID Dicoding: [ID Dicoding Anda]
+Nama: Yuliagus
+ID Dicoding: fc558d5y1116
 Link Deployment: [Link GitHub Pages Anda]
 
 Fitur yang diimplementasikan:

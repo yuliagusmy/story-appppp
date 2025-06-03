@@ -1,3 +1,5 @@
+import NotFoundView from './not-found-view';
+
 export class StoryDetailView {
   constructor() {
     this.container = null;
@@ -59,7 +61,7 @@ export class StoryDetailView {
             src="${story.photoUrl || story.photo}"
             alt="Foto cerita ${story.name}"
             loading="lazy"
-            onerror="this.src='https://via.placeholder.com/800x600?text=Gambar+tidak+tersedia'"
+            onerror="this.src='/placeholder.png'"
           >
         </div>
         ${hasLocation ? `
@@ -127,14 +129,22 @@ export class StoryDetailView {
   }
 
   renderError(message) {
-    this.container.innerHTML = `
-      <div class="story-detail-container">
-        <div class="error-message">${message}</div>
-        <a href="#/" class="story-more-btn">
-          <i class="fas fa-arrow-left"></i>
-          Kembali
-        </a>
-      </div>
-    `;
+    let errorMessage;
+    if (message && message.toLowerCase().includes('not found')) {
+      const notFoundView = new NotFoundView();
+      errorMessage = notFoundView.getTemplate();
+    } else {
+      errorMessage = `<div class="error-message">${message}</div><a href="#/" class="story-more-btn">Kembali</a>`;
+    }
+    if (!this.container) {
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) {
+        mainContent.innerHTML = errorMessage;
+      } else {
+        alert(message);
+      }
+      return;
+    }
+    this.container.innerHTML = errorMessage;
   }
 }

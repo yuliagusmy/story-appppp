@@ -15,6 +15,7 @@ export class Router {
   async renderPage() {
     const url = UrlParser.parseActiveUrlWithCombiner();
     const route = this.routes[url] || null;
+    const urlParts = UrlParser.parseActiveUrlWithoutCombiner();
 
     try {
       if (route) {
@@ -27,9 +28,17 @@ export class Router {
         }
 
         // Start view transition
+        let presenter;
+        if (url.includes('/:id') && urlParts.id) {
+          presenter = new route.Presenter(urlParts.id);
+        } else if (route.param) {
+          presenter = new route.Presenter(route.param);
+        } else {
+          presenter = new route.Presenter();
+        }
+
         if (document.startViewTransition) {
           await document.startViewTransition(async () => {
-            const presenter = route.param ? new route.Presenter(route.param) : new route.Presenter();
             if (!presenter.view || typeof presenter.view.render !== 'function') {
               throw new Error('View not properly initialized');
             }
@@ -42,7 +51,6 @@ export class Router {
           }).finished;
         } else {
           // Fallback for browsers that don't support View Transitions API
-          const presenter = route.param ? new route.Presenter(route.param) : new route.Presenter();
           if (!presenter.view || typeof presenter.view.render !== 'function') {
             throw new Error('View not properly initialized');
           }
@@ -75,27 +83,77 @@ export class Router {
     // Update navigation items based on auth status
     if (isLoggedIn) {
       navList.innerHTML = `
-        <li><a href="#/" class="nav-link">Beranda</a></li>
-        <li><a href="#/saved" class="nav-link">Story Disimpan</a></li>
-        <li><a href="#/add" class="nav-link btn-action btn-navbar-add">Tambah Cerita</a></li>
-        <li><a href="#" id="logout-button" class="nav-link">Logout</a></li>
+        <li><a href="#/" class="nav-link"><i class="fas fa-home"></i> Beranda</a></li>
+        <li><a href="#/saved" class="nav-link"><i class="fas fa-bookmark"></i> Save Story</a></li>
+        <li><a href="#/add" class="nav-link btn-action btn-navbar-add"><i class="fas fa-plus-circle"></i> Add Story</a></li>
+        <li><push-notification-toggle></push-notification-toggle></li>
+        <li><a href="#" id="logout-button" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
       `;
 
-      // Add logout handler
+      // Add logout handler with confirmation dialog
       const logoutButton = document.querySelector('#logout-button');
       if (logoutButton) {
-        logoutButton.addEventListener('click', (e) => {
+        logoutButton.addEventListener('click', async (e) => {
           e.preventDefault();
-          this.authModel.logout();
-          this.notification.showSuccess('Berhasil logout');
-          setTimeout(() => {
-            this.navigate('/auth');
-          }, 1000);
+          // Show confirmation dialog
+          let dialog = document.querySelector('.logout-dialog');
+          if (!dialog) {
+            dialog = document.createElement('div');
+            dialog.className = 'logout-dialog';
+            dialog.innerHTML = `
+              <div class="logout-dialog-content">
+                <h3>Konfirmasi Logout</h3>
+                <p>Apakah Anda yakin ingin keluar?</p>
+                <div class="logout-dialog-buttons">
+                  <button class="btn-cancel">Tidak</button>
+                  <button class="btn-confirm">Ya</button>
+                </div>
+              </div>
+            `;
+            document.body.appendChild(dialog);
+          }
+          dialog.classList.add('active');
+          document.body.classList.add('dialog-open');
+
+          // Handler
+          const cleanup = () => {
+            dialog.classList.remove('active');
+            document.body.classList.remove('dialog-open');
+          };
+          const btnCancel = dialog.querySelector('.btn-cancel');
+          const btnConfirm = dialog.querySelector('.btn-confirm');
+
+          // Remove previous listeners
+          btnCancel.onclick = null;
+          btnConfirm.onclick = null;
+          dialog.onclick = null;
+
+          // Cancel
+          btnCancel.onclick = (ev) => {
+            ev.stopPropagation();
+            cleanup();
+          };
+          // Confirm
+          btnConfirm.onclick = (ev) => {
+            ev.stopPropagation();
+            cleanup();
+            this.authModel.logout();
+            this.notification.showSuccess('Berhasil logout');
+            setTimeout(() => {
+              this.navigate('/auth');
+            }, 1000);
+          };
+          // Click outside
+          dialog.onclick = (ev) => {
+            if (ev.target === dialog) {
+              cleanup();
+            }
+          };
         });
       }
     } else {
       navList.innerHTML = `
-        <li><a href="#/auth" class="nav-link">Login</a></li>
+        <li><a href="#/auth" class="nav-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
       `;
     }
   }

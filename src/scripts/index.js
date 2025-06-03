@@ -2,6 +2,7 @@
 import '../styles/styles.css';
 
 // Import routes and router
+import './components/bottom-bar.js';
 import App from './pages/app.js';
 import router from './routes/index.js';
 import pushNotification from './utils/push-notification.js';
@@ -19,11 +20,16 @@ window.addEventListener('hashchange', () => {
 });
 
 window.addEventListener('load', () => {
-  router.renderPage();
+  const token = localStorage.getItem('token');
+  if (!token && (window.location.hash === '' || window.location.hash === '#/' || window.location.hash === '#')) {
+    window.location.hash = '#/auth';
+  } else {
+    router.renderPage();
+  }
 });
 
 document.addEventListener('DOMContentLoaded', async () => {
-  await router.renderPage();
+  // Tidak perlu renderPage di sini, sudah di-handle di event load di atas
 
   // Initialize skip link
   const skipLink = document.querySelector('.skip-link');

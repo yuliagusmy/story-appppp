@@ -2,6 +2,7 @@ export class AddStoryView {
   constructor() {
     this.mediaStream = null;
     this.photoBlob = null;
+    this.cameraActive = false;
   }
 
   render() {
@@ -28,20 +29,23 @@ export class AddStoryView {
             <label for="photo">Foto</label>
             <div class="camera-upload-row">
               <div class="camera-container" role="region" aria-label="Kamera">
-                <video
-                  id="camera-preview"
-                  autoplay
-                  playsinline
-                  aria-label="Preview kamera"
-                  aria-describedby="camera-error"
-                ></video>
-                <div class="camera-error-message" id="camera-error"></div>
-                <div class="camera-controls">
-                  <button type="button" id="camera-button" class="btn-camera">Ambil Foto</button>
-                  <button type="button" id="switch-camera" class="btn-camera">Ganti Kamera</button>
-                </div>
-                <div id="camera-instructions" class="visually-hidden">
-                  Klik tombol untuk mengambil foto. Pastikan wajah Anda terlihat jelas dalam frame kamera.
+                <button type="button" id="toggle-camera-btn" class="btn-camera">Buka Kamera</button>
+                <div id="camera-preview-wrapper" style="display:none;flex-direction:column;align-items:center;">
+                  <video
+                    id="camera-preview"
+                    autoplay
+                    playsinline
+                    aria-label="Preview kamera"
+                    aria-describedby="camera-error"
+                  ></video>
+                  <div class="camera-error-message" id="camera-error"></div>
+                  <div class="camera-controls">
+                    <button type="button" id="camera-button" class="btn-camera">Ambil Foto</button>
+                    <button type="button" id="switch-camera" class="btn-camera">Ganti Kamera</button>
+                  </div>
+                  <div id="camera-instructions" class="visually-hidden">
+                    Klik tombol untuk mengambil foto. Pastikan wajah Anda terlihat jelas dalam frame kamera.
+                  </div>
                 </div>
               </div>
               <div class="upload-controls">
@@ -91,17 +95,35 @@ export class AddStoryView {
   }
 
   afterRender() {
-    // Wait for DOM to be ready
     setTimeout(() => {
       this.formElement = document.querySelector('#story-form');
-      this.cameraButton = document.querySelector('#camera-button');
+      this.toggleCameraBtn = document.querySelector('#toggle-camera-btn');
+      this.cameraPreviewWrapper = document.querySelector('#camera-preview-wrapper');
       this.cameraPreview = document.querySelector('#camera-preview');
+      this.cameraButton = document.querySelector('#camera-button');
+      this.switchCameraBtn = document.querySelector('#switch-camera');
       this.mapElement = document.querySelector('#map');
       this.latInput = document.querySelector('#lat');
       this.lonInput = document.querySelector('#lon');
       this.photoInput = document.querySelector('#photo');
       this.uploadPhotoBtn = document.querySelector('#upload-photo-btn');
       this.dropArea = document.querySelector('#drop-area');
+
+      if (this.toggleCameraBtn) {
+        this.toggleCameraBtn.addEventListener('click', async () => {
+          if (!this.cameraActive) {
+            await this.initCamera();
+            this.cameraActive = true;
+            this.cameraPreviewWrapper.style.display = 'flex';
+            this.toggleCameraBtn.textContent = 'Tutup Kamera';
+          } else {
+            this.stopCamera();
+            this.cameraActive = false;
+            this.cameraPreviewWrapper.style.display = 'none';
+            this.toggleCameraBtn.textContent = 'Buka Kamera';
+          }
+        });
+      }
 
       if (this.uploadPhotoBtn) {
         this.uploadPhotoBtn.addEventListener('click', () => {

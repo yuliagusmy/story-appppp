@@ -19,9 +19,12 @@ export class AuthView {
               <label for="loginEmail">Email</label>
               <input type="email" id="loginEmail" required>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="position:relative;">
               <label for="loginPassword">Password</label>
               <input type="password" id="loginPassword" required minlength="8">
+              <button type="button" id="toggleLoginPassword" style="position:absolute;right:12px;top:38px;background:none;border:none;cursor:pointer;padding:4px;">
+                <i class="fas fa-eye" id="loginPasswordIcon"></i>
+              </button>
             </div>
             <button type="submit" class="btn-primary">Login</button>
           </form>
@@ -64,6 +67,24 @@ export class AuthView {
         document.getElementById(formId).classList.remove('hidden');
       });
     });
+
+    // Show/hide password for login
+    const toggleBtn = document.getElementById('toggleLoginPassword');
+    const passwordInput = document.getElementById('loginPassword');
+    const icon = document.getElementById('loginPasswordIcon');
+    if (toggleBtn && passwordInput && icon) {
+      toggleBtn.onclick = () => {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        }
+      };
+    }
   }
 
   bindLoginHandler(handler) {

@@ -4,7 +4,7 @@ const pushNotification = {
   async register(token) {
     if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
 
-    const registration = await navigator.serviceWorker.register('/service-worker.js');
+    const registration = await navigator.serviceWorker.register('/sw.js');
     await navigator.serviceWorker.ready;
 
     let subscription = await registration.pushManager.getSubscription();

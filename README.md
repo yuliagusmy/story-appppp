@@ -53,7 +53,7 @@ Aplikasi web progresif (PWA) untuk berbagi cerita dengan fitur kamera dan peta.
    ```
 
 ## Deployment
-Aplikasi ini di-deploy di GitHub Pages. Link deployment dapat dilihat di file `STUDENT.txt`.
+Aplikasi ini di-deploy di Netlify. Link deployment dapat dilihat di file `STUDENT.txt`.
 
 ## Screenshots
 Screenshots aplikasi dapat dilihat di folder `screenshots/`:
