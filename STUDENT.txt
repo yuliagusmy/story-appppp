@@ -7,11 +7,9 @@ APP_URL=https://story-app-dicoding.web.app
 
 URL: https://github.com/yuliagusmy/story-appppp
 
-Ganti 'username' dan 'namarepo' dengan username dan nama repository GitHub Anda setelah deploy.
-
 Nama: Yuliagus
 ID Dicoding: fc558d5y1116
-Link Deployment: [Link GitHub Pages Anda]
+Link Deployment: https://storyappfinal.netlify.app/
 
 Fitur yang diimplementasikan:
 1. PWA (Progressive Web App)
