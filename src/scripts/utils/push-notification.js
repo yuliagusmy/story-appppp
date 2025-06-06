@@ -21,6 +21,10 @@ const pushNotification = {
       applicationServerKey: this.urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY)
     });
 
+    if (!subscription || !subscription.keys) {
+      throw new Error('Gagal mendapatkan keys dari subscription. Pastikan browser mendukung Push API dan izin sudah diberikan.');
+    }
+
     // Kirim subscription ke API Dicoding (hanya endpoint dan keys)
     const filteredSubscription = {
       endpoint: subscription.endpoint,
