@@ -24,6 +24,18 @@ class PushNotificationToggle extends HTMLElement {
     const toggle = this.shadowRoot.querySelector('#push-toggle');
     if (toggle) {
       toggle.addEventListener('change', async (event) => {
+        if (!('serviceWorker' in navigator)) {
+          if (window.globalNotificationView) {
+            window.globalNotificationView.showError('Service Worker tidak didukung di browser ini.');
+          }
+          toggle.checked = false;
+          this.dispatchEvent(new CustomEvent('notif-status-changed', {
+            detail: false,
+            bubbles: true,
+            composed: true
+          }));
+          return;
+        }
         const token = localStorage.getItem('token');
         if (!token) {
           if (window.globalNotificationView) {

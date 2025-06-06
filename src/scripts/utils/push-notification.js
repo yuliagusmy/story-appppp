@@ -2,7 +2,9 @@ import CONFIG from '../config.js';
 
 const pushNotification = {
   async register(token) {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      throw new Error('Service Worker tidak didukung di browser ini.');
+    }
 
     const registration = await navigator.serviceWorker.register('/sw.js');
     await navigator.serviceWorker.ready;
@@ -16,10 +18,21 @@ const pushNotification = {
       }
     }
 
+    // Pastikan permission notifikasi sudah diberikan
+    if (Notification.permission !== 'granted') {
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        throw new Error('Izin notifikasi tidak diberikan oleh user.');
+      }
+    }
+
+    console.log('Sebelum subscribe');
     subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: this.urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY)
     });
+    console.log('Setelah subscribe', subscription);
+    console.log('Subscription keys:', subscription && subscription.keys);
 
     if (!subscription || !subscription.keys) {
       throw new Error('Gagal mendapatkan keys dari subscription. Pastikan browser mendukung Push API dan izin sudah diberikan.');
@@ -47,6 +60,9 @@ const pushNotification = {
   },
 
   async unregister(token) {
+    if (!('serviceWorker' in navigator)) {
+      throw new Error('Service Worker tidak didukung di browser ini.');
+    }
     const registration = await navigator.serviceWorker.ready;
     const subscription = await registration.pushManager.getSubscription();
     if (subscription) {

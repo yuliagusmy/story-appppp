@@ -36,12 +36,19 @@ const pushHandler = {
 
   async subscribeToPush(subscription) {
     try {
+      const filtered = {
+        endpoint: subscription.endpoint,
+        keys: {
+          p256dh: subscription.keys.p256dh,
+          auth: subscription.keys.auth
+        }
+      };
       const response = await fetch(`${CONFIG.BASE_URL}/push/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(subscription)
+        body: JSON.stringify(filtered)
       });
 
       if (!response.ok) {
