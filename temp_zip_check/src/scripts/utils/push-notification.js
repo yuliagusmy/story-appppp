@@ -21,22 +21,14 @@ const pushNotification = {
       applicationServerKey: this.urlBase64ToUint8Array(CONFIG.VAPID_PUBLIC_KEY)
     });
 
-    // Kirim subscription ke API Dicoding (hanya endpoint dan keys)
-    const filteredSubscription = {
-      endpoint: subscription.endpoint,
-      keys: {
-        p256dh: subscription.keys.p256dh,
-        auth: subscription.keys.auth
-      }
-    };
-
+    // Kirim subscription ke API Dicoding
     await fetch(`${CONFIG.BASE_URL}/notifications/subscribe`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(filteredSubscription)
+      body: JSON.stringify(subscription)
     });
 
     return subscription;

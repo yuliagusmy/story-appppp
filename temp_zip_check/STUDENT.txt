@@ -1,0 +1,39 @@
+APP_URL=https://story-app-dicoding.web.app
+
+# Informasi Tambahan
+- Aplikasi menggunakan OpenStreetMap untuk layanan peta
+- Tidak memerlukan API key
+- Peta dapat digunakan secara gratis
+
+URL: https://github.com/yuliagusmy/story-appppp
+
+Nama: Yuliagus
+ID Dicoding: fc558d5y1116
+Link Deployment: https://storyappfinal.netlify.app/
+
+Fitur yang diimplementasikan:
+1. PWA (Progressive Web App)
+   - Installable
+   - Offline support dengan Service Worker
+   - Manifest yang lengkap
+   - Application Shell Architecture
+
+2. Push Notification
+   - Menggunakan VAPID key dari Dicoding
+   - Service worker untuk menangani notifikasi
+   - Toggle untuk mengaktifkan/menonaktifkan notifikasi
+
+3. IndexedDB
+   - Menyimpan cerita favorit
+   - Menampilkan cerita yang disimpan
+   - Menghapus cerita yang disimpan
+
+Fitur Opsional:
+1. Manifest Shortcuts
+   - Shortcut ke halaman "Tambah Cerita"
+
+2. Screenshots di Manifest
+   - Screenshot desktop dan mobile
+
+3. Maskable Icons
+   - Icon yang mendukung adaptive icons di Android

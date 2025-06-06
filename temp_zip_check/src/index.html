@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#3498db">
+    <meta name="description" content="Aplikasi berbagi cerita dengan fitur kamera dan peta">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Story App">
+    <meta name="application-name" content="Story App">
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.svg">
+    <title>Story App</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script type="module" src="scripts/index.js"></script>
+    <script type="module" src="scripts/components/push-notification-toggle.js"></script>
+
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
+
+    <header class="main-header">
+        <a class="brand-name" href="#/">
+            <span class="brand-logo">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect x="4" y="4" width="24" height="24" rx="6" fill="#4a90e2" />
+                    <path d="M10 16h12M16 10v12" stroke="#fff" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </span>
+            Story App
+        </a>
+        <button id="drawer-button" class="drawer-button" aria-label="Menu">☰</button>
+        <nav id="navigation-drawer" class="navigation-drawer">
+            <ul id="nav-list" class="nav-list">
+                <!-- Navigation items will be dynamically inserted here by router.js -->
+            </ul>
+        </nav>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1"></main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Story App. Dibuat dengan ❤️</p>
+        </div>
+    </footer>
+
+    <bottom-bar></bottom-bar>
+
+    <script>
+        window.showLogoutDialog = function () {
+            // Cegah dialog dobel
+            if (document.querySelector('.logout-dialog.active')) return;
+
+            const dialog = document.createElement('div');
+            dialog.className = 'logout-dialog active';
+            dialog.innerHTML = `
+        <div class="logout-dialog-content">
+          <h3>Konfirmasi Logout</h3>
+          <p>Apakah Anda yakin ingin keluar?</p>
+          <div class="logout-dialog-buttons">
+            <button class="btn-cancel">Tidak</button>
+            <button class="btn-confirm">Ya</button>
+          </div>
+        </div>
+      `;
+            document.body.appendChild(dialog);
+            document.body.classList.add('dialog-open');
+
+            const cleanup = () => {
+                dialog.remove();
+                document.body.classList.remove('dialog-open');
+            };
+            dialog.querySelector('.btn-cancel').onclick = cleanup;
+            dialog.querySelector('.btn-confirm').onclick = () => {
+                cleanup();
+                localStorage.removeItem('token');
+                window.location.hash = '#/auth';
+                window.location.reload();
+            };
+            dialog.onclick = (e) => {
+                if (e.target === dialog) cleanup();
+            };
+        };
+    </script>
+</body>
+
+</html>

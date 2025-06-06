@@ -3,42 +3,47 @@
   "short_name": "Story",
   "description": "Aplikasi berbagi cerita dengan fitur kamera dan peta",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#3498db",
+  "orientation": "portrait",
+  "categories": ["social", "lifestyle"],
   "icons": [
     {
       "src": "/icons/icon-192x192.svg",
       "sizes": "192x192",
-      "type": "image/svg+xml"
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
       "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshots/desktop.png",
-      "sizes": "1280x720",
       "type": "image/png",
-      "platform": "wide"
-    },
-    {
-      "src": "/screenshots/mobile.png",
-      "sizes": "750x1334",
-      "type": "image/png",
-      "platform": "narrow"
+      "purpose": "any maskable"
     }
   ],
   "shortcuts": [
     {
       "name": "Tambah Cerita",
       "short_name": "Tambah",
-      "description": "Tambah cerita baru",
-      "url": "/add-story",
-      "icons": [{ "src": "/icons/add-96x96.png", "sizes": "96x96" }]
+      "description": "Buka halaman tambah cerita",
+      "url": "/#/tambah",
+      "icons": [{ "src": "/icons/icon-192x192.svg", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop.png",
+      "sizes": "1280x800",
+      "type": "image/png",
+      "label": "Tampilan Desktop"
+    },
+    {
+      "src": "/screenshots/mobile.png",
+      "sizes": "360x800",
+      "type": "image/png",
+      "label": "Tampilan Mobile"
     }
   ]
 }
